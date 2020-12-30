@@ -31,4 +31,4 @@ var lengthOfLongestSubstring = function(s) {
     return longest;
 };
 
-// time complexity: o(n)
+// time complexity: o(n) 
