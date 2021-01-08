@@ -110,7 +110,6 @@ class LinkedList {
             i += 1;
             currentNode.next;
         }
-
         return currentNode;
     }
 
@@ -126,12 +125,19 @@ class LinkedList {
 
     // TODO: Implement the insert method here
     insert(index, val) {
-
+        if(index < 0 || index > this.length - 1) return false;
+        let nextNode = this.get(index);
+        let currentNode = this.set(index, val);
+        currentNode.next = nextNode;
+        this.length += 1;
     }
 
     // TODO: Implement the remove method here
     remove(index) {
-
+        if(index < 0 || index > this.length - 1) return undefined;
+        let toBeRemove = this.get(index);
+        this.length -= 1;
+        return toBeRemove;
     }
 
     // TODO: Implement the size method here
