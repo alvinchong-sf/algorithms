@@ -28,6 +28,6 @@ var countPrimes = function(n) {
     return count;
 };
 
-//time o(n) i think
-
+// time o(n) i think
+// solution is actually an implementation "Sieve of Eratosthenes"
 // https://leetcode.com/problems/count-primes/
