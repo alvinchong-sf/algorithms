@@ -39,3 +39,5 @@ WHERE Customers.Id NOT IN (
     SELECT CustomerId
     from Orders
 )
+
+-- https://leetcode.com/problems/customers-who-never-order/
