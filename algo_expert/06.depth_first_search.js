@@ -9,13 +9,28 @@ class Node {
     return this;
   }
 
+  // using stack
   depthFirstSearch(array) {
-		array.push(this.name);
-		this.children.forEach((child) => {
-			child.depthFirstSearch(array);
-		})
-		return array;
+    let stack = [this];
+		
+		while(stack.length) {
+			let node = stack.pop();
+			array.push(node.name);
+			node.children.forEach((child) => {
+				child.depthFirstSearch(array)
+			})
+		}
+		return array
 	}
+  
+  // algo expert way
+  // depthFirstSearch(array) {
+	// 	array.push(this.name);
+	// 	this.children.forEach((child) => {
+	// 		child.depthFirstSearch(array);
+	// 	})
+	// 	return array;
+	// }
 }
 // time o(v + e) vertex(node) + edge
 // space o(v) by the number of vertex
