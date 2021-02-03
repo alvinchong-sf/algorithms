@@ -32,10 +32,35 @@ const collision = (asteroids) => {
         return asteroids;
 }
 
+// sami sollution
+const collision = (asteroids) =>{
+    let stack = [asteroids[0]]
+    for(let i = 1; i< asteroids.length;i++){
+        let asteroid = stack[stack.length-1]
+        let nextAst = asteroids[i]
+        if( (asteroid < 0 && nextAst < 0) || (asteroid > 0 && nextAst > 0) || (asteroid < 0 || nextAst > 0) ){
+            stack.push(nextAst)
+        }
+        else{
+            while(stack.length && stack[stack.length-1] > 0){
+                let posvalue = stack.pop()
+                if(posvalue > Math.abs(nextAst)){
+                    stack.push(posvalue);break;
+                }else if (posvalue === Math.abs(nextAst)){
+                    break;
+                }else{
+                    if(stack.length === 0) stack.push(nextAst);
+                    continue;
+                }
+            }
+        }
+    }return stack
+}
+
 // Input:
 // asteroids = [1,2,3,-3,4,-2]
 // Output = [1, 2, 4]
 // asteroids = [1,2,2,-3,4,-2]
 // Output = [-3,4]
-// Time o(n * m) for sure polynomial
+// Time o(n^2 * m) for sure polynomial
 // Space o(1) extra space
