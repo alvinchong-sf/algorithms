@@ -21,6 +21,6 @@ var searchMatrix = function(matrix, target) {
     return false;
 };
 
-// time o(n + m);
+/// time o(n + m);
 // space o(1) extra space
 // https://leetcode.com/problems/search-a-2d-matrix/
