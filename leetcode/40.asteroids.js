@@ -10,8 +10,8 @@
 
 const collision = (asteroids) => {
 	for(let i = 0; i < asteroids.length - 1; i++) {
-		Let asteroid = asteroids[i];
-		Let nextAst = asteroids[i + 1];
+		let asteroid = asteroids[i];
+		let nextAst = asteroids[i + 1];
         if( (asteroid < 0 && nextAst < 0) || (asteroid > 0 && nextAst > 0) || (asteroid < 0 || nextAst > 0) ) {
             continue;
         }
@@ -23,7 +23,7 @@ const collision = (asteroids) => {
                 asteroids.splice(i, 2);
             } else if(asteroid > Math.abs(nextAst)) {
                 asteroids.splice(i + 1, 1)
-            } else (asteroid < Math.abs(nextAst)) {
+            } else if (asteroid < Math.abs(nextAst)) {
                 asteroids.splice(i, 1)
             }
                 i = -1;
