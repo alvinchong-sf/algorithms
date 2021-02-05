@@ -10,3 +10,6 @@ function isPalindrome(string) {
 	}
 	return true;
 }
+
+// time o(n) one loop
+// space o(1) no additional storing of space
