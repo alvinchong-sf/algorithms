@@ -40,104 +40,161 @@ class LinkedList {
 
     // TODO: Implement the addToTail method here
     addToTail(val) {
-        const node = new Node(val);
-
-        if (!this.length) {
-            this.head =  node
+        // A- > B -> C
+        const newNode = new Node(val);
+        if(!this.length) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            let oldTail = this.tail;
+            this.tail = newNode;
+            oldTail.next = this.tail;
         }
-        this.tail = node;
-        this.length += 1;
+
+        this.length++;
         return this;
     }
 
     // TODO: Implement the removeTail method here
     removeTail() {
-
+        let oldTail = this.tail;
         if(!this.length) return undefined;
-
-        this.tail.next = null;
         if(this.length === 1) {
-            this.tail = null;
             this.head = null;
+            this.tail = null;
         }
-        this.length -=1;
+        let currentNode = this.head;
+        if(this.length > 1) {
+            for(let i = 1; i < this.length - 1; i++) {
+                currentNode = currentNode.next;
+            }
+            this.tail = currentNode;
+            currentNode.next = null;
+        }
+        this.length--;
+        return oldTail;
     }
 
     // TODO: Implement the addToHead method here
     addToHead(val) {
-        let newHead = new Node(val);
-        let currentHead = this.head;
+        // N -> A -> B -> C
+        const newNode = new Node(val);
         if(!this.length) {
-            this.head = newHead;
-            this.tail = newHead;
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            let oldHead = this.head;
+            this.head = newNode;
+            newNode.next = oldHead;
         }
-        newHead.next = currentHead;
-        this.head = newHead;
-        this.length += 1;
+        this.length++;
         return this;
     }
 
     // TODO: Implement the removeHead method here
     removeHead() {
+        // A -> B -> C -> D
+        // A
         if(!this.length) return undefined;
-        let currentHead = this.head;
+        const oldHead = this.head;
         if(this.length === 1) {
             this.head = null;
             this.tail = null;
+        } else {
+            let newHead = this.head.next;
+            this.head = newHead;
         }
-        this.head = currentHead.next;
-        // this.head.next = currentHead.next.next;
-        this.length -= 1;
-        return currentHead;
+        this.length--;
+        return oldHead;
     }
 
     // TODO: Implement the contains method here
     contains(target) {
-        let node = this.head;
-        while(node) {
-            if(node.value === target) return true;
-            node = node.next;
+        if(!this.length) return false;
+        let currentNode = this.head;
+        while(currentNode) {
+            if(currentNode.value === target) return true;
+            currentNode = currentNode.next;
         }
         return false;
     }
 
     // TODO: Implement the get method here
     get(index) {
-        if(index < 0 || index > this.length - 1) return null;
-        let i = 0
+        // A -> B -> C -> D
+        if(index >= this.length) return null;
+        let counter = 0;
         let currentNode = this.head;
-        while( i !== index) {
-            i += 1;
-            currentNode.next;
+        while(currentNode) {                  
+            if(counter === index) return currentNode;
+            currentNode = currentNode.next;
+            counter++;  
         }
-        return currentNode;
     }
 
     // TODO: Implement the set method here
     set(index, val) {
-        if(!this.get(index)) {
-            return false;
-        } else {
-            this.get(index).value = val
-            return true;
+        // A -> B -> D ->
+        if(!this.length) return false;
+        let currentNode = this.head;
+        for(let i = 0; i < this.length; i++) {
+            if(i === index) {
+                currentNode.value = val;
+                return true;
+            }
+            currentNode = currentNode.next;
         }
+        return false;
     }
 
     // TODO: Implement the insert method here
     insert(index, val) {
-        if(index < 0 || index > this.length - 1) return false;
-        let nextNode = this.get(index);
-        let currentNode = this.set(index, val);
-        currentNode.next = nextNode;
-        this.length += 1;
+        // A -> B -> D -> E     ~~ we want to insert (2, C)
+        // A -> B -> C -> D -> E
+        // set index of i - 1 to point to new val
+        // set new val.next to point to i + 1
+        if(index >= this.length) return false;
+        // if (index === this.length) return this.addToTail(val);
+        if (index === 0) return this.addToHead(val);
+        // if (index === this.length - 1) this.addToTail(val);
+
+        const newNode = new Node(val);
+        let currentNode = this.head;
+        for(let i = 0; i < this.length; i++) {
+            let prevNode = null;
+            if(i === index - 1) {
+                prevNode = currentNode;
+                let nextNode = prevNode.next;
+                prevNode.next = newNode
+                newNode.next = nextNode;
+                this.length++;
+                return true;
+            }
+            currentNode = currentNode.next;
+        }
     }
 
     // TODO: Implement the remove method here
     remove(index) {
-        if(index < 0 || index > this.length - 1) return undefined;
-        let toBeRemove = this.get(index);
-        this.length -= 1;
-        return toBeRemove;
+        // A -> B -> C -> D -> E
+        // A -> B -> D -> E
+        if(index >= this.length) return undefined;
+        if(index === 0) return this.removeHead();
+        if(index === this.length - 1) return this.removeTail();
+
+        let i = 0;
+        let currentNode = this.head;
+        let removed = null;
+        while( i <= index - 1) {
+            if(i === index - 1) {
+                removed = currentNode.next;
+                currentNode.next = currentNode.next.next;
+            }
+            currentNode = currentNode.next;
+            i += 1;
+        }
+        this.length--;
+        return removed;
     }
 
     // TODO: Implement the size method here
