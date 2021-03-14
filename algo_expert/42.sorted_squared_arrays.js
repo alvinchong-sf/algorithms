@@ -17,5 +17,5 @@ function sortedSquaredArray(array) {
 	return resultArr;
 }
 
-// time o(n)
+// time o(n) // 
 // space o(n)
