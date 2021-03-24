@@ -14,6 +14,7 @@ function TreeNode(val, left, right) {
     this.right = (right===undefined ? null : right)
 }
 
+// stack solution
 var rangeSumBST = function(root, low, high) {
     let sum = 0;
     let stack = [root];
@@ -32,6 +33,30 @@ var rangeSumBST = function(root, low, high) {
 
 // time o(n) n is number of nodes
 // space o(h) h is height of tree
-
 // https://leetcode.com/problems/range-sum-of-bst/
 
+
+// DFS / pre-order
+var rangeSumBST = function(root, low, high, memo ={sum: 0}) {
+    if(!root) return;
+    if(root.val >= low && root.val <= high) memo.sum += root.val;
+    rangeSumBST(root.left, low, high, memo);
+    rangeSumBST(root.right, low, high, memo);
+    return memo.sum;
+};
+
+// queue / BFS
+var rangeSumBST = function(root, low, high) {
+    let sum = 0;
+    let queue = [root];
+    
+    while(queue.length) {
+        let node = queue.shift();
+        if(node.val >= low && node.val <= high) sum += node.val
+        
+        if(node.left) queue.push(node.left);
+        if(node.right) queue.push(node.right);
+    }
+    
+    return sum;
+};
