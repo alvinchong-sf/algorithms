@@ -14,7 +14,7 @@ function TreeNode(val, left, right) {
     this.right = (right===undefined ? null : right)
 }
 
-// stack solution
+// iterative stack solution
 var rangeSumBST = function(root, low, high) {
     let sum = 0;
     let stack = [root];
@@ -36,7 +36,7 @@ var rangeSumBST = function(root, low, high) {
 // https://leetcode.com/problems/range-sum-of-bst/
 
 
-// DFS / pre-order
+// DFS / pre-order with memo
 var rangeSumBST = function(root, low, high, memo ={sum: 0}) {
     if(!root) return;
     if(root.val >= low && root.val <= high) memo.sum += root.val;
@@ -60,3 +60,18 @@ var rangeSumBST = function(root, low, high) {
     
     return sum;
 };
+
+// DFS no memo
+var rangeSumBST = function(root, low, high, sum = 0) {
+    
+    if(!root) return 0;
+    
+    if(root.val >= low && root.val <= high) {
+        sum = root.val
+    }
+    
+    let left = rangeSumBST(root.left, low, high);
+    let right = rangeSumBST(root.right, low, high);
+    
+    return sum + left + right;
+}
