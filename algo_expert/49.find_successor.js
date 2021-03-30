@@ -84,3 +84,33 @@ function findSuccessor(tree, node) {
 ///////////////////////////////////////////////////////////////////////////////
 
 
+function findSuccessor(tree, node) {
+	// if single node return null
+	if(!node.parent && !node.right) return null;
+	
+	// if we have right, then traverse to the left most bottom side
+	if(node.right) {
+		let currentNode = node.right
+		while(currentNode.left) {
+			currentNode = currentNode.left;
+		}
+		return currentNode;
+	}
+	
+	// if we have no right, 2 options
+	// 1. if we are left child -> return node.parent
+	// 2. if we are right child -> return node.parent.parent
+	
+	if(node.parent.left === node) {
+		return node.parent;
+	} else if(node.parent.right === node) {
+		if(!node.parent.parent) {
+			return null;
+		} else {
+			return node.parent.parent
+		}
+	}
+}
+
+// time o(h) where height of subtree of node
+// space o(1) 
