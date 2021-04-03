@@ -15,5 +15,49 @@ function binarySearch(array, target) {
 	}
 }
 
+// time o(n) => because of array slicing
+// space o(log(n)) => because the array is always halved of original input and recursive stack is also halved
+
+/////////////////////////////////////////////////////////////////////////////////
+
+function binarySearch(array, target, left = 0, right = array.length - 1) {
+	if(left > right) return -1;
+
+	let midIdx = Math.floor((left + right) / 2);
+	let midEle = array[midIdx];
+
+	if(target === midEle) {
+		return midIdx;
+	} else if(target < midEle) {
+		return binarySearch(array, target, left, midIdx - 1);
+	} else if (target > midEle) {
+		return binarySearch(array, target, midIdx + 1, right);
+	}
+}
+
+// time o(log(n)) => no slicing, accessing left and right pointer in constant time
+// space o(log(n)) => recursive call stack 
+
+/////////////////////////////////////////////////////////////////////////////////
+
+function binarySearch(array, target) {
+	let left = 0;
+	let right = array.length - 1;
+	
+	while (left <= right) {
+		let midIdx = Math.floor((left + right) / 2);
+		let midEle = array[midIdx];
+		
+		if(target === midEle) {
+			return midIdx;
+		} else if(target < midEle) {
+			right = midIdx - 1;
+		} else if(target > midEle) {
+			left = midIdx + 1;
+		}
+	}
+	return -1;
+}
+
 // time o(log(n))
-// space o(log(n))
+// space o(1) no call stack, no extra array
