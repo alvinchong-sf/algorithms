@@ -9,7 +9,7 @@
 // No two values have the same number of occurrences.
 
 var uniqueOccurrences = function(arr) {
-    // [1,2,2,1,1,3]
+    // [1,2,2,1,1,3] // 
     // key = num in array ; value = counter
     // {
     //     1: 3
