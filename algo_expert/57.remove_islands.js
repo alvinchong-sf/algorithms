@@ -39,7 +39,7 @@ const dfs = (i, j, matrix) => {
 		if(matrix[idx1][idx2] === 1) {
 			matrix[idx1][idx2] = "V"
 			list.push(node);
-				// left
+			// left
 			if(idx2 - 1 >= 0) stack.push([idx1, idx2 - 1])
 			// right
 			if(idx2 + 1 <= matrix[0].length - 1) stack.push([idx1, idx2 + 1])
