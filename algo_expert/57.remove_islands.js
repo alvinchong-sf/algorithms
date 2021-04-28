@@ -3,7 +3,7 @@ function removeIslands(matrix) {
     // loop through entire matrix
     // if 0 or out of bounds; skip
     // if 1; we call dfs helper function on it
-	for(let i = 0; i < matrix.length; i++) {
+	for(let i = 0; i < matrix.length; i++) {     // o(n * m * p)
 		for(let j = 0; j < matrix[0].length; j++) {
 			if(matrix[i][j] === 0) {
 				continue;
@@ -19,7 +19,7 @@ function removeIslands(matrix) {
 
     // final loop to turn visited back to 1
 	for(let row = 0; row < matrix.length; row++) {
-		for(let col = 0; col < matrix[row].length; col++) {
+		for(let col = 0; col < matrix[row].length; col++) {       // o(n * m)
 			if(matrix[row][col] === "V") matrix[row][col] = 1
 		}
 	}
@@ -68,3 +68,7 @@ const dfs = (i, j, matrix) => {
 	}
 	
 }
+
+// time o(n * m * p) where n and m is the dimention of matrix; p is the length of all good coordinates
+// space o(q + p) extra space, q is stack and p is length of all good coordinates
+
