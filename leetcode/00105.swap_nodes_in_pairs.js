@@ -33,3 +33,26 @@ var swapPairs = function(head) {
 // time o(n) linear
 // space o(n) linear because of queue array
 // https://leetcode.com/problems/swap-nodes-in-pairs/
+
+var swapPairs = function(head) {
+    
+    if(!head || !head.next) return head;
+    
+    let dummyHead = new ListNode("dummy");
+    let currentNode = head;
+    let prevNode = dummyHead;
+    
+    while(currentNode && currentNode.next) {
+        let nextNode = currentNode.next.next;
+        prevNode.next = currentNode.next;
+        prevNode.next.next = currentNode
+        prevNode = prevNode.next.next;
+        currentNode = nextNode;
+        prevNode.next = currentNode;
+    }
+    
+    return dummyHead.next;
+};
+
+// time o(n)
+// space o(1)
