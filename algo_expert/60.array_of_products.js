@@ -52,5 +52,5 @@ function arrayOfProducts(array) {
 	return resultArr;
 }
 
-// time o(2n) => o(n)
+// time o(2n) => o(n) 
 // space o(n)
