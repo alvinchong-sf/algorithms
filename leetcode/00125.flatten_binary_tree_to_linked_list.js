@@ -32,3 +32,32 @@ var flatten = function(root) {
 // time o(n)
 // space o(h)
 // https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+
+
+// Morris Traversal
+var flatten = function(root) {
+    let node = root;
+    while(node) {
+        if(!node.left) {
+            node = node.right
+        } else {
+            let pred = node.left;
+            while(pred.right && pred.right != node) {
+                pred = pred.right
+            }
+            
+            if(!pred.right) {
+                pred.right = node;
+                node = node.left
+            } else {
+                pred.right = node.right
+                node.right = node.left
+                node.left = null
+                node = node.right
+            }
+        }
+    }
+};
+
+// time o(n)
+// space o(1)
