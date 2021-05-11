@@ -1,0 +1,36 @@
+// 654. Maximum Binary Tree
+
+// You are given an integer array nums with no duplicates. A maximum binary tree 
+// can be built recursively from nums using the following algorithm:
+
+// Create a root node whose value is the maximum value in nums.
+// Recursively build the left subtree on the subarray prefix to the left of the 
+// maximum value. Recursively build the right subtree on the subarray suffix to 
+// the right of the maximum value. Return the maximum binary tree built from nums.
+
+var constructMaximumBinaryTree = function(nums) {
+    if(!nums.length) return null;
+    let maxVal = -Infinity;
+    let maxIdx = Infinity;
+    
+    for(let i = 0; i < nums.length; i++) {
+        let num = nums[i];
+        if(num > maxVal) {
+            maxVal = num;
+            maxIdx = i;
+        }
+    }
+    const newNode = new TreeNode(maxVal);
+    
+    let leftArr = nums.slice(0, maxIdx);
+    let rightArr = nums.slice(maxIdx + 1);
+    
+    newNode.left = constructMaximumBinaryTree(leftArr);
+    newNode.right = constructMaximumBinaryTree(rightArr);
+    
+    return newNode;
+};
+
+// time o(n^2)
+// space o(n)
+// https://leetcode.com/problems/maximum-binary-tree/
