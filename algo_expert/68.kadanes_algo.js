@@ -1,8 +1,8 @@
 function kadanesAlgorithm(array) {
-  let maxSum = array[0];
-	let currSum = array[0];
+  let maxSum = -Infinity;
+	let currSum = -Infinity;
 	
-	for(let i = 1; i < array.length; i++) {
+	for(let i = 0; i < array.length; i++) {
 		currSum = Math.max( currSum + array[i], array[i] );
 		maxSum = Math.max(currSum, maxSum)
 	}
