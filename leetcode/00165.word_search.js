@@ -20,7 +20,7 @@ const dfs = (board, row, col, word, i) => {
     if(i === word.length - 1) return true;
     let temp = board[row][col];
     board[row][col] = true;
-    
+
     // top
     let top = dfs(board, row - 1, col, word, i + 1);
     
@@ -36,3 +36,8 @@ const dfs = (board, row, col, word, i) => {
     board[row][col] = temp;
     return top || right || left || bottom;
 }
+
+// time o(n * m)
+// space o(w) w is the length of the word and w recursive stack calls
+
+// https://leetcode.com/problems/word-search/
