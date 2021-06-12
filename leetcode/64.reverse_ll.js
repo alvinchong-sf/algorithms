@@ -42,3 +42,29 @@ var reverseList = function(head) {
 // time o(n)
 // space o(1) extra
 // https://leetcode.com/problems/reverse-linked-list/
+
+
+// recursive solution
+var reverseList = function(head) {
+    if(!head || !head.next) return head;
+    let currNode = head;
+    let prevNode = null;
+    let lastNode = null;
+    
+    const dfs = (currentNode, prevNode) => {
+        if(!currentNode.next) {
+            currentNode.next = prevNode;
+            lastNode = currentNode;
+            return;
+        }
+        
+        let nextNode = currentNode.next;
+        currentNode.next = prevNode;
+        prevNode = currentNode;
+        
+        dfs(nextNode, currentNode);
+    }
+    
+    dfs(currNode, prevNode);
+    return lastNode;
+};
