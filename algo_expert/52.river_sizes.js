@@ -2,7 +2,7 @@ function riverSizes(matrix) {
   // resultArr = [2,1,5,2,2]
 	// count = 2
 	// 2 nested loops; i and j
-		// [V, 0, 0, V, 0],
+	// [V, 0, 0, V, 0],
     // [V, 0, V, 0, 0],
     // [0, 0, V, 0, V],
     // [V, 0, V, 0, V],
