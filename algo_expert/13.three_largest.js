@@ -1,13 +1,20 @@
 function findThreeLargestNumbers(array) {
-	let newArr = [];
-  while ( newArr.length < 3) {
-		let largest = Math.max(...array);
-		newArr.push(largest);
-		let largestIdx = array.indexOf(largest);
-		array.splice(largestIdx, 1);
-	}
-	return newArr.reverse();
+	let first = -Infinity,
+		second = -Infinity,
+		third = -Infinity;
+	
+	for (const num of array) {
+		if (num >= first) {
+			[first, second, third] = [num, first, second];
+		} else if (num >= second) {
+			[first, second, third] = [first, num, second];
+		} else if (num >= third) {
+			[first, second, third] = [first, second, num];
+		}
+	};
+	
+	return [third, second, first];
 }
 
-// time o(n) may look nested but since while loop does not grow with the input array it is constant time
-// space o(1) because it is always going to be 3 num inside the array.
+// time o(n) | space o(1) 
+// https://www.algoexpert.io/questions/Find%20Three%20Largest%20Numbers
