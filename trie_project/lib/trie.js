@@ -10,64 +10,50 @@ class Trie {
         this.root = new Node();
     }
 
-    insertRecur(word, root=this.root) {
-        let letter = word[0];
-        if(!(letter in root.children)) {
-            root.children[letter] = new Node();
+    insertRecur(word, idx = 0, root = this.root) {
+        if (idx === word.length) {
+            root.isTerminal = true;
+            return;
         }
-
-        if(word.length === 1) {
-            root.children[letter].isTerminal = true;
-        } else {
-            this.insertRecur(word.slice(1), root.children[letter]);
+        const char = word[idx];
+        if (root.children[char] === undefined) {
+            root.children[char] = new Node();
         }
+        this.insertRecur(word, idx + 1, root.children[char]);
+    };
+    // word = "Hello"
+    //             i
+    //   { H: {children: {e: {children: {o: {children:{}, isTerminal=true}}, isTerminal=false}}, isTerminal=false} }
+    searchRecur(word, idx = 0, root = this.root) {
+        const char = word[idx];
+        if (idx === word.length && root.isTerminal === true) return true;
+        if (root.children[char] === undefined) return false;
+        return this.searchRecur(word, idx + 1, root.children[char])
     }
-
-    searchRecur(word, root=this.root) {
-        if(word.length === 0) {
-            if(root.isTerminal) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        let letter = word[0];
-        if(letter in root.children) {
-            return this.searchRecur(word.slice(1), root.children[letter]);
-        } else {
-            return false;
-        }
-    }
-
+    
     insertIter(word) {
-        let node = this.root;
-
-        for(let i = 0; i < word.length; i++) {
-            let letter = word[i];
-
-            if(!(letter in node.children)) {
-                node.children[letter] = new Node();
-            }
-
-            node = node.children[letter];
+        let root = this.root;
+        for (let i = 0; i < word.length; i++) {
+            const char = word[i];
+            if (root.children[char] === undefined) {
+                root.children[char] = new Node();
+            } 
+            root = root.children[char];
         }
-        node.isTerminal = true;
+        root.isTerminal = true;
     }
+    // word = "hello"
+    ///            i
+    // {children: {h: {children: {o: {children: {}, isterminal= false}}, terminal=false}}, terminal=false}
 
     searchIter(word) {
-        let node = this.root;
-
-        for(let i = 0; i < word.length; i++) {
-            let letter = word[i];
-
-            if(!(letter in node.children)) {
-                return false;
-            }
-
-            node = node.children[letter];
-        }
-        return node.isTerminal;
+        let root = this.root;
+        for (let i = 0; i < word.length; i++) {
+            const char = word[i];
+            if (root.children[char] === undefined) return false;
+            root = root.children[char];
+        };
+        return root.isTerminal === true ? true : false;
     }
 
     wordsWithPrefix(prefix, root=this.root) {
