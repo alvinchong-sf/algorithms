@@ -9,6 +9,57 @@ function ListNode(val, next) {
      this.next = (next===undefined ? null : next)
  }
 
+// refactored syntatically
+var reverseBetween = function(head, left, right) {
+    if (!head || !head.next) return head;
+    
+    let startNode = null, 
+        endNode = null, 
+        count = 1,
+        currNode = head,
+        prevNode = null;
+    
+    while (currNode) {
+        if (count === left) {
+            startNode = prevNode;
+        }
+        
+        if (count === right) {
+            endNode = currNode.next;
+            break;
+        }
+        
+        prevNode = currNode;
+        currNode = currNode.next;
+        count++;
+    }
+    
+    const nextNode = startNode ? startNode.next : head;
+    currNode.next = null;
+    const { newHeadNode, newTailNode } = reverseList(nextNode);
+    
+    if (startNode) startNode.next = newHeadNode;
+    newTailNode.next = endNode;
+    return left === 1 ? newHeadNode : head;
+};
+
+var reverseList = function(head) {
+    let newTailNode = head;
+    let currNode = head,
+        newHeadNode = null;
+    
+    while (currNode) {
+        let nextNode = currNode.next;
+        currNode.next = newHeadNode;
+        newHeadNode = currNode;
+        currNode = nextNode;
+    }
+    
+    return { newHeadNode, newTailNode };
+};
+
+
+
 var reverseBetween = function(head, left, right) {  
     // Part1 find start, end, temp1, temp2 
     // first loop; find start and end nodes
