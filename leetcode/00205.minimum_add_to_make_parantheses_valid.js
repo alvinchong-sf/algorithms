@@ -10,6 +10,28 @@
 // For example, if s = "()))", you can insert an opening parenthesis to be "(()))" or a closing parenthesis to be "())))".
 // Return the minimum number of moves required to make s valid.
 
+function minAddToMakeValid(text) {
+  let opening = 0, count = 0;
+  
+  for (let i = 0; i < text.length; i++) {
+    const ele = text[i];
+    if (ele === "(") {
+      opening++;
+    } else if (ele === ")" && opening === 0) {
+      count++;
+    } else {
+      opening--;
+    }
+  }
+  
+  return opening + count;
+}
+
+// time o(n) | space o(1)
+
+
+
+
 var minAddToMakeValid = function(s) {
     if (s.length === 1) return 1;
     
