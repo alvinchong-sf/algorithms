@@ -45,5 +45,5 @@ function helper(word, mainHash) {
 }
 
 // time o(n * m)
-// space o(c) 
+// space o(c)
 // https://www.algoexpert.io/questions/Minimum%20Characters%20For%20Words
