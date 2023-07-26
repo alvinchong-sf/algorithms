@@ -38,5 +38,31 @@ var minKnightMoves = function(x, y) {
     }
 };
 
+// const movements = [[1,2], [1,-2], [2,1], [2,-1], [-1,2], [-1,-2], [-2,1], [-2,-1]];
+    // const queue = [[startRow, startCol]];
+    // const visitedSet = new Set();
+    // let moves = 0;
+    
+    // while (queue.length) {
+    //     const size = queue.length;
+    //     for (let i = 0; i < size; i++) {
+    //         const [oldRow, oldCol] = queue.shift();
+    //         if (oldRow === endRow && oldCol === endCol) return moves;
+    //         visitedSet.add(`${oldRow}-${oldCol}`);
+    //         for (let j = 0; j < movements.length; j++) {
+    //             const movement = movements[j];
+    //             const [x, y] = movement;
+    //             const newRow = oldRow + x;
+    //             const newCol = oldCol + y;
+    //             if (newRow >= n || newRow < 0 || newCol >= n || newCol < 0) continue;
+    //             if (!visitedSet.has(`${newRow}-${newCol}`)) continue;
+    //             queue.push([newRow, newCol]);
+    //         };
+    //     }
+    //     moves++;
+    // }
+    
+    // return -1;
+
 // time o((n * m)^2) | space o((n * m)^2)
 //https://leetcode.com/problems/minimum-knight-moves/solution/

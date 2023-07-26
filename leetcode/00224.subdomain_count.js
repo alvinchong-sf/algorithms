@@ -17,7 +17,6 @@
 // answer in any order.
 
  
-
 // Example 1:
 // Input: cpdomains = ["9001 discuss.leetcode.com"]
 // Output: ["9001 leetcode.com","9001 discuss.leetcode.com","9001 com"]
@@ -50,7 +49,7 @@ var subdomainVisits = function(cpdomains) {
         
         const splitArr = domain.split(".");
         splitArr.shift();
-        const newDomain = splitArr.join(".")
+        const newDomain = splitArr.join(".");
         
         recursiveHelper(count, newDomain, resultObj);
     }
@@ -58,7 +57,7 @@ var subdomainVisits = function(cpdomains) {
     const resultArr = [];
     for (const domain in resultObj) {
         const count = resultObj[domain];
-        const newStr = `${count} ${domain}`
+        const newStr = `${count} ${domain}`;
         resultArr.push(newStr);
     }
     
