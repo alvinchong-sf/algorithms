@@ -25,9 +25,9 @@ def solution(n, m):
 
 def gcd(num1, num2):
     small =  min(num1, num2)
-    greatest = 0
+    greatest = 1
     for i in range(small+1, 0, -1):
         if num1 % i == 0 and num2 % i == 0:
-            greatest = max(greatest, i)
+            return i
         
     return greatest
