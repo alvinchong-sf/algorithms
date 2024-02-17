@@ -56,7 +56,7 @@
 # https://app.codesignal.com/arcade/graphs-arcade/kingdom-roads/pmmMeP4JkqgKbzyTy
 
 def solution(n, roads):
-    results = [-1 for idx in range(n)]
+    results = [-1 for _ in range(n)]
     anymore_left_to_conquer = True
     days = 1
     
@@ -79,18 +79,18 @@ def solution(n, roads):
     
 def update_map(graph, conquered, n):
     anymore_left_to_conquer = False
-    for num in range(0, n):
-        if num in graph and len(graph[num]) == 0:
-            del graph[num]
+    for city in range(n):
+        if city in graph and len(graph[city]) == 0:
+            del graph[city]
 
-    for key2 in graph:
-        new_arr = []
-        val2 = graph[key2]
-        for v in val2:
-            if v not in conquered:
-                new_arr.append(v)
-        graph[key2] = new_arr
-        if len(new_arr) < 2:
+    for city2 in graph:
+        new_cities = []
+        cities = graph[city2]
+        for city3 in cities:
+            if city3 not in conquered:
+                new_cities.append(city3)
+        graph[city2] = new_cities
+        if len(new_cities) < 2:
             anymore_left_to_conquer = True
             
     return anymore_left_to_conquer
