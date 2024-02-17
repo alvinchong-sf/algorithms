@@ -84,11 +84,7 @@ def update_map(graph, conquered, n):
             del graph[city]
 
     for city2 in graph:
-        new_cities = []
-        cities = graph[city2]
-        for city3 in cities:
-            if city3 not in conquered:
-                new_cities.append(city3)
+        new_cities = list(filter(lambda x: x not in conquered, graph[city2]))
         graph[city2] = new_cities
         if len(new_cities) < 2:
             anymore_left_to_conquer = True
