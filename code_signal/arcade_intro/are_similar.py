@@ -22,6 +22,30 @@
 
 # https://app.codesignal.com/arcade/intro/level-4/xYXfzQmnhBvEKJwXP/drafts
 
+# Updated solution
+def solution(a, b):
+    changes = 0
+    a_num, b_num = None, None
+    
+    for i in range(len(a)):
+        num1, num2 = a[i], b[i]
+        if num1 != num2:
+            changes += 1
+            if changes > 2: 
+                return False
+            elif changes == 1:
+                a_num = num1
+                b_num = num2
+            else:
+                if num1 != b_num or num2 != a_num:
+                    return False
+    
+    return False if changes == 1 else True
+
+
+
+
+# Brute force solution
 def solution(a, b):
     hash_map1, hash_map2 = {}, {}
     
