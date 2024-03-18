@@ -43,6 +43,7 @@
 -- | 3.50  | 4    |
 -- +-------+------+
 
+-- without using window function
 with T as (select distinct score from Scores)
 
 select score, (
@@ -51,3 +52,6 @@ select score, (
 ) as "Rank"
 from Scores as S
 order by "Rank"
+
+-- one liner solution using window function: dense_rank
+select score, dense_rank() over(order by score desc) as rank from Scores
