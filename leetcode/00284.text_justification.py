@@ -54,7 +54,8 @@
 # words[i].length <= maxWidth
 
 # time: O(n) | space: O(n) | n is the length of words gien
-# But probably need a refactor for code stylistic improvements
+# todo: refactor for code stylistic improvements
+# todo: refactor for single pass
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
         result = self.format_1(words, maxWidth)
