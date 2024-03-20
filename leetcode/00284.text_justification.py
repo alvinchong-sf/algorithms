@@ -53,61 +53,53 @@
 # 1 <= maxWidth <= 100
 # words[i].length <= maxWidth
 
-# time: O(n) | space: O(n) | n is the length of words gien
-# todo: refactor for code stylistic improvements
-# todo: refactor for single pass
+# time: O(n) | space: O(n) | n is the length of words given
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        result = self.format_1(words, maxWidth)
-        return self.format_2(result, maxWidth)
+        result = self.format_words(words, maxWidth)
+        final_result = []
+        for i in range(len(result) - 1):
+            temp, row, num_empty_space, remainder, whitespaces = self.handle_each_row(result, maxWidth, i)
+            for word in row:
+                temp.append(word)
+                if num_empty_space > 0 and remainder > 0:
+                    remainder -= 1
+                    temp.append(" ")
+                if num_empty_space > 0:
+                    temp.append(whitespaces)
+                    num_empty_space -= 1
+            final_result.append("".join(temp))
 
-    def format_2(self, result, maxWidth):
-        real_result = []
-        for j in range(len(result)):
-            row = result[j]
-            total_whitespace_needed = maxWidth - len("".join(row))
-            num_empty_space = len(row) - 1
-            if num_empty_space == 0:
-                num_empty_space = 1
-            remainder = total_whitespace_needed % num_empty_space
-            whitespace_num = total_whitespace_needed // num_empty_space
-            actual_whitespace = " " * whitespace_num
-            temp = []
-            if j == len(result) - 1:
-                new_s = " ".join(row)
-                n = len(new_s)
-                wn = maxWidth - n
-                aw = " " * wn
-                temp.append(new_s)
-                temp.append(aw)
-            else:
-                for i in range(len(row)):
-                    word = row[i]
-                    temp.append(word)
-                    if num_empty_space > 0:
-                        if remainder > 0:
-                            remainder -= 1
-                            temp.append(actual_whitespace + " ")
-                        else:
-                            temp.append(actual_whitespace)
-                        num_empty_space -= 1
+        self.handle_last_row(result, maxWidth, final_result)
+        return final_result
 
-            real_result.append("".join(temp))
-        return real_result
+    def handle_last_row(self, result, maxWidth, final_result):
+        temp = []
+        last_row_str = " ".join(result[-1])
+        whitespace_num = maxWidth - len(last_row_str)
+        temp.append(last_row_str)
+        temp.append(" " * whitespace_num)
+        final_result.append("".join(temp))
 
-    def format_1(self, words, maxWidth):
+    def handle_each_row(self, result, maxWidth, idx):
+        temp = []
+        row = result[idx]
+        total_whitespace_needed = maxWidth - len("".join(row))
+        num_empty_space = 1 if len(row) - 1 == 0 else len(row) - 1
+        remainder = total_whitespace_needed % num_empty_space
+        num_whitespace = total_whitespace_needed // num_empty_space
+        whitespaces = " " * num_whitespace
+        return (temp, row, num_empty_space, remainder, whitespaces)
+
+    def format_words(self, words, maxWidth):
         result, temp = [], []
         currMaxWidth = maxWidth
         for word in words:
-            curr_length = len(word) if len(temp) == 0 else len(word) + 1
-            if currMaxWidth >= curr_length:
-                temp.append(word)
-                currMaxWidth -= curr_length
-            else:
+            if currMaxWidth < (len(word) if len(temp) == 0 else len(word) + 1):
                 result.append(temp.copy())
                 temp = []
                 currMaxWidth = maxWidth
-                temp.append(word)
-                currMaxWidth -= len(word)
+            currMaxWidth -= (len(word) if len(temp) == 0 else len(word) + 1)
+            temp.append(word)
         result.append(temp)
         return result
