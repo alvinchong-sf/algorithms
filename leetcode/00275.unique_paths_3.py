@@ -38,58 +38,59 @@
 # 1 <= m * n <= 20
 # -1 <= grid[i][j] <= 2
 # There is exactly one starting cell and one ending cell.
-
 class Solution:
     def uniquePathsIII(self, grid: List[List[int]]) -> int:
-        m, n = len(grid), len(grid[0])
-        graph, starting_point, ending_point = self.build_graph(grid, m, n)
-        sr, sc = starting_point
-        er, ec = ending_point
-        result = [0]
-        self.dfs(grid, sr, sc, m, n, graph, er, ec, result)
-        return result[0]
+        m, n =  len(grid), len(grid[0])
+        hash_map, start, end = self.build_hash_map(grid, m, n)
+        sr, sc = start
+        er, ec = end
+        total = [0]
+        self.dfs(grid, sr, sc, m, n, hash_map, er, ec, total)
+        return total[0]
 
-    def dfs(self, grid, row, col, m, n, graph, er, ec, result):
-        if row < 0 or row >= m or col < 0 or col >= n or grid[row][col] == -1:
+    def dfs(self, grid, row, col, m, n, hash_map, er, ec, total):
+        if row < 0 or col < 0 or row >= m or col >= n or grid[row][col] == -1:
             return
 
+        hash_map[f"{row}-{col}"] = True
         if row == er and col == ec:
-            if self.are_all_visited(graph):
-                result[0] += 1
+            if self.all_true(hash_map):
+                total[0] += 1
+            hash_map[f"{row}-{col}"] = False
             return
-        
-        cache_cell = grid[row][col]
+
+        temp = grid[row][col]
         grid[row][col] = -1
-        graph[f"{row}-{col}"] = True
 
-        self.dfs(grid, row+1, col, m, n, graph, er, ec, result)
-        self.dfs(grid, row-1, col, m, n, graph, er, ec, result)
-        self.dfs(grid, row, col+1, m, n, graph, er, ec, result)
-        self.dfs(grid, row, col-1, m, n, graph, er, ec, result)
+        self.dfs(grid, row+1, col, m, n, hash_map, er, ec, total)
+        self.dfs(grid, row-1, col, m, n, hash_map, er, ec, total)
+        self.dfs(grid, row, col+1, m, n, hash_map, er, ec, total)
+        self.dfs(grid, row, col-1, m, n, hash_map, er, ec, total)
 
-        grid[row][col] = cache_cell
-        graph[f"{row}-{col}"] = False
-        
+        grid[row][col] = temp
+        hash_map[f"{row}-{col}"] = False
+        return
 
-    def are_all_visited(self, graph):
-        return all(x == True for x in list(graph.values()))
+    def all_true(self, hash_map):
+        return all(hash_map.values())
 
-
-    def build_graph(self, grid, m, n):
-        graph = {}
-        starting_point = [-1, -1]
-        ending_point = [-1, -1]
-
+    def build_hash_map(self, grid, m, n):
+        hash_map = {}
+        start, end = [-1, -1], [-1, -1]
         for row in range(m):
             for col in range(n):
                 cell = grid[row][col]
+                if cell == -1:
+                    continue
+
                 if cell == 1:
-                    starting_point = [row, col]
+                    start[0] = row
+                    start[1] = col
                 
                 if cell == 2:
-                    ending_point = [row, col]
-                
-                if cell == 0 or cell == 1:
-                    graph[f"{row}-{col}"] = False
+                    end[0] = row
+                    end[1] = col
+
+                hash_map[f"{row}-{col}"] = False
         
-        return (graph, starting_point, ending_point)
+        return (hash_map, start, end)
