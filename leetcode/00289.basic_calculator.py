@@ -26,61 +26,50 @@
 #     Every number and running calculation will fit in a signed 32-bit integer.
 
 # https://leetcode.com/problems/basic-calculator/description/
-# Need to refactor to make code prettier but time and space complexity should be alright
 # Time: O(n) | Space: O(n)
 class Solution:
     def calculate(self, s: str) -> int:
         digits = tuple([str(i) for i in range(10)])
         stack = []
-        operator = "+"
+        is_add = True
         total = 0
         n = len(s)
         i = 0
         while i < n:
             c = s[i]
             if c in digits:
-                digit, end_idx = self.get_digits(i, s, digits)
-                if operator == "+":
+                digit, end_idx = self.get_digits(i, s, digits, n)
+                if is_add:
                     total += digit
                 else:
                     total -= digit
-                    operator = "+"
+                    is_add = True
                 i = end_idx
-            elif c == "(":
-                stack.append((total, operator))
-                total = 0
-                operator = "+"
-                i += 1
-            elif c == ")":
-                sub_total, ops = stack.pop()
-                if ops == "+" and operator == "+":
-                    total += sub_total
-                elif ops == "-" and operator == "-":
-                    total = sub_total + abs(total)
-                    operator = "+"
-                else:
-                    total = sub_total - total
-                    operator = "+"
-                i += 1
-            elif c == "+":
-                operator = "+"
-                i += 1
-            elif c == "-":
-                operator = "-"
-                i += 1
             else:
+                if c == "(" or c == ")":
+                    if c == "(":
+                        stack.append((total, is_add))
+                        total = 0
+                    else:
+                        outer_total, outer_is_plus = stack.pop()
+                        if outer_is_plus:
+                            total += outer_total
+                        else:
+                            total = outer_total - total
+                    is_add = True
+
+                if c == "-":
+                    is_add = False
+
                 i += 1
 
         return total
 
-    def get_digits(self, idx, s, digits):
-        n = len(s)
+    def get_digits(self, idx, s, digits, n):
         temp = []
-
         for i in range(idx, n):
             if s[i] in digits:
                 temp.append(s[i])
             else:
                 return (int("".join(temp)), i)
-        
         return (int("".join(temp)), n)
