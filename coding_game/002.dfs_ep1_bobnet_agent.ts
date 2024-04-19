@@ -84,6 +84,8 @@ Response time per turn ≤ 150ms
  * the standard input according to the problem statement.
  **/
 
+// https://www.codingame.com/training/hard/death-first-search-episode-1
+
 var inputs: string[] = readline().split(' ');
 const N: number = parseInt(inputs[0]); // the total number of nodes in the level, including the gateways
 const L: number = parseInt(inputs[1]); // the number of links
