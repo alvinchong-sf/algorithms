@@ -88,7 +88,7 @@ var inputs: string[] = readline().split(' ');
 const N: number = parseInt(inputs[0]); // the total number of nodes in the level, including the gateways
 const L: number = parseInt(inputs[1]); // the number of links
 const E: number = parseInt(inputs[2]); // the number of exit gateways
-const nodes = []
+const nodes: [number, number][] = []
 for (let i = 0; i < L; i++) {
     var inputs: string[] = readline().split(' ');
     const N1: number = parseInt(inputs[0]); // N1 and N2 defines a link between these nodes
@@ -118,59 +118,42 @@ for (const [node1, node2] of nodes) {
     }
 }
 
-function dfs(idx: number, graph: Graph, gatewayNodes: Set<number>, visitedSet): boolean {
-    if (visitedSet.has(idx)) return false;
-    if (gatewayNodes.has(idx)) return true;
+function bfs(
+    startNode: number, 
+    graph: Graph, 
+    visitedSet: Set<number>, 
+    gatewayNodes: Set<number>
+): [number, number] | [null, null] {
+    const queue = [startNode];
 
-    visitedSet.add(idx);
-
-    for (const node of graph[idx]) {
-        const hasGateway = dfs(node, graph, gatewayNodes, visitedSet);
-        if (hasGateway) return true;
+    while (queue.length) {
+        const size = queue.length;
+        for (let i = 0; i < size; i++) {
+            const node = queue.shift() || 0;
+            for (const nextNode of graph[node]) {
+                if (gatewayNodes.has(nextNode)) {
+                    return [node, nextNode]
+                }
+                if (!(visitedSet.has(nextNode))) {
+                    queue.push(nextNode);
+                    visitedSet.add(nextNode);
+                }
+            }
+        }
     }
 
-    visitedSet.delete(idx);
-
-    return false;
-}
-
-function findGateway(arr, set): number | null {
-    console.error(arr)
-    for (const num of arr) {
-        if (set.has(num)) return num
-    }
-    return null;
-}
-
-// TODO: Find min height for node2
-function findMinHeight(idx, graph, gatewayNodes) {
-    if (gatewayNodes.has(idx)) return 0;
-    let minHeight = Infinity;
-    for (const node of graph[idx]) {
-        const currHeight = findMinHeight(node, graph, gatewayNodes);
-        minHeight = Math.min(minHeight, currHeight)
-    }
-
-    return minHeight + 1
+    return [null, null]
 }
 
 // game loop
 while (true) {
     const SI: number = parseInt(readline()); // Bobnet agent
     const visitedSet = new Set<number>([SI]);
-    let node1: number | undefined = undefined;
-    let node2: number | undefined = undefined;
 
-    for (const node of graph[SI.toString()]) {
-        const hasGateway = dfs(node, graph, gatewayNodes, visitedSet);
-        if (hasGateway) {
-            node1 = SI;
-            node2 = findMinHeight(SI, graph, gatewayNodes); // TODO: Find min height for this node
-            break
-        }
-    }
-
-    if (node1 !== undefined && node2 !== undefined) {
-        console.log(`${node1} ${node2}`)
+    const [start, end] = bfs(SI, graph, visitedSet, gatewayNodes);
+    if (start !== null && end !== null) {
+        console.log(`${start} ${end}`);
+    } else {
+        console.log("0 1");
     }
 }
