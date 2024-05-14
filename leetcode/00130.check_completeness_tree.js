@@ -5,7 +5,9 @@
 // In a complete binary tree, every level, except possibly the last, is 
 // completely filled, and all nodes in the last level are as far left as
 //  possible. It can have between 1 and 2h nodes inclusive at the last level h.
+// https://leetcode.com/problems/check-completeness-of-a-binary-tree/
 
+// time o(n) | space o(n)
 var isCompleteTree = function(root) {
     if(!root.left && !root.right) return true;
     
@@ -25,6 +27,31 @@ var isCompleteTree = function(root) {
     return true;
 };
 
-// time o(n)
-// space o(n)
-// https://leetcode.com/problems/check-completeness-of-a-binary-tree/
+/**
+Python solution
+
+from collections import deque
+class Solution:
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        if root is None: return True
+        queue = deque([root])
+        is_leaf = False
+
+        while queue:
+            node = queue.popleft()
+            if node.left is None and node.right is None:
+                is_leaf = True
+            if is_leaf and (node.left or node.right):
+                return False
+            else:
+                if node.left and node.right:
+                    queue.append(node.left)
+                    queue.append(node.right)
+                elif node.left:
+                    queue.append(node.left)
+                    is_leaf = True
+                elif node.right:
+                    return False
+
+        return True
+ */
