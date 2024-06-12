@@ -35,32 +35,22 @@ class RecentCounter:
         self.pings = []
 
     def ping(self, t: int) -> int:
-        if not self.pings:
-            self.pings.append(t)
-            return 1
-        left_idx, right_idx = self.binary_search(self.pings, t)
+        left_idx = -1
+        if self.pings:
+            left_idx, right_idx = self.binary_search(self.pings, t)
         self.pings.append(t)
-        return 1 if left_idx == -1 or right_idx == -1 else right_idx - left_idx + 2
+        return 1 if left_idx == -1 else right_idx - left_idx + 2
     
     def binary_search(self, pings, t):
-        start_range, end_range = t - 3000, t
-        left_idx = right_idx = -1
-        left1 = left2 = 0
-        right1 = right2 = len(pings) - 1
-        while left1 <= right1:
-            mid1 = ((right1 - left1) // 2) + left1
+        n = len(pings)
+        start_range = t - 3000
+        left_idx = -1
+        left, right = 0, n - 1
+        while left <= right:
+            mid1 = ((right - left) // 2) + left
             if pings[mid1] >= start_range:
                 left_idx = mid1
-                right1 = mid1 - 1
+                right = mid1 - 1
             else:
-                left1 = mid1 + 1
-
-        while left2 <= right2:
-            mid2 = ((right2 - left2) // 2) + left2
-            if pings[mid2] <= end_range:
-                right_idx = mid2
-                left2 = mid2 + 1
-            else:
-                right2 = mid2 - 1
-
-        return (left_idx, right_idx)
+                left = mid1 + 1
+        return (left_idx, n - 1)
