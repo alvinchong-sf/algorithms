@@ -29,18 +29,22 @@ https://leetcode.com/problems/number-of-recent-calls/description
 Time: O(log(n)) | Space: O(1)
 the number of pings stored in array does not grow as t grows, therefore constant space
 """
-
+from collections import deque
 class RecentCounter:
     def __init__(self):
         self.pings = []
+        self.queue = deque([])
 
     def ping(self, t: int) -> int:
+        # return self.bfs(t)
+
         left_idx = -1
         if self.pings:
             left_idx, right_idx = self.binary_search(self.pings, t)
         self.pings.append(t)
         return 1 if left_idx == -1 else right_idx - left_idx + 2
     
+    # using binary search
     def binary_search(self, pings, t):
         n = len(pings)
         start_range = t - 3000
@@ -54,3 +58,12 @@ class RecentCounter:
             else:
                 left = mid1 + 1
         return (left_idx, n - 1)
+
+    # Using queue
+    def bfs(self, t: int) -> int:
+        start_range = t - 3000
+        if self.queue:
+            while self.queue and self.queue[0] < start_range:
+                self.queue.popleft()
+        self.queue.append(t)
+        return 1 if not self.queue else len(self.queue)
