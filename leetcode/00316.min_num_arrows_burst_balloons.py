@@ -39,18 +39,14 @@ Time: O(nlog(n)) | Space: O(1)
 
 class Solution:
     def findMinArrowShots(self, points: List[List[int]]) -> int:
-        n = len(points)
-        if n == 1: return 1
-        points.sort(key=lambda x:  x[1])
-        arrows = 0
-        min_end = points[0][1]
-
-        for i in range(1, n):
-            curr_start = points[i][0]
-            curr_end = points[i][1]
-            if curr_start > min_end:
-                arrows += 1
-                min_end = curr_end
-
-        arrows += 1
-        return arrows
+        points.sort(key=lambda x: x[0])
+        arrow = 0
+        start, end = points[0][0], points[0][1]
+        for curr_start, curr_end in points[1:]:
+            if curr_start < start or curr_start > end:
+                start = curr_start
+                end = curr_end
+                arrow += 1
+            else:
+                end = min(end, curr_end)
+        return arrow + 1
