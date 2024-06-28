@@ -45,29 +45,28 @@ e = number of edges or roads
 """
 class Solution:
     def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
-        # part1
-        graph1, graph2 = {}, {}
-        for i in range(n):
-            graph1[i] = 0
-            graph2[i] = []
+        # subarr = [city, count, importance]
+        arr = [[i, 0, -1] for i in range(n)]
+        graph = {}
         for city1, city2 in roads:
-            graph1[city1] += 1
-            graph1[city2] += 1
-            graph2[city1].append(city2)
+            arr[city1][1] += 1
+            arr[city2][1] += 1
+            if city1 in graph:
+                graph[city1].append(city2)
+            else:
+                graph[city1] = [city2]
 
-        # part2
-        arr1 = [(key, val)for key, val in graph1.items()]
-        arr1.sort(key=lambda x: x[1], reverse=True)
-        graph3 = {}
-        importance = n
-        for key, val in arr1:
-            graph3[key] = importance
-            importance -= 1
+        # assign importance
+        arr.sort(key=lambda x: x[1], reverse=True)
+        for subarr in arr:
+            subarr[2] = n
+            n -= 1
+        arr.sort(key=lambda x: x[0])
 
         total = 0
-        for city, cities in graph2.items():
-            val = graph3[city]
+        for city, cities in graph.items():
+            val1 = arr[city][2]
             for c in cities:
-                v = graph3[c]
-                total += (val + v)
+                val2 = arr[c][2]
+                total += (val1 + val2)
         return total
