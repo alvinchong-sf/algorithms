@@ -43,7 +43,7 @@ class Solution:
         
     def dfs(self, root, distance):
         if root is None: return []
-        if root.left is None and root.right is None:
+        if root.left is None and root.right is None: 
             return [1]
         left, right = [], []
         if root.left:
@@ -54,9 +54,4 @@ class Solution:
             for dist2 in right:
                 if dist1 + dist2 <= distance:
                     self.good_pairs += 1
-        new_arr = []
-        for d1 in left:
-            new_arr.append(d1 + 1)
-        for d2 in right:
-            new_arr.append(d2 + 1)
-        return new_arr
+        return [d + 1 for d in left + right]
