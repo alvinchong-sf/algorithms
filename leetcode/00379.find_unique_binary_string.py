@@ -37,7 +37,7 @@ class Solution:
         temp = []
         return self.dfs(0, nums_set, temp, n)[1]
 
-    def dfs(self, i, nums, temp, n):
+    def dfs(self, _, nums, temp, n):
         if len(temp) >= n:
             s = "".join(temp.copy())
             return (False, "") if s in nums else (True, s)
