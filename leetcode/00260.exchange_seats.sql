@@ -11,18 +11,12 @@
 -- Each row of this table indicates the name and the ID of a student.
 -- id is a continuous increment.
  
-
 -- Write a solution to swap the seat id of every two consecutive students. If the number of students 
 -- is odd, the id of the last student is not swapped.
-
 -- Return the result table ordered by id in ascending order.
-
 -- The result format is in the following example.
 
- 
-
 -- Example 1:
-
 -- Input: 
 -- Seat table:
 -- +----+---------+
@@ -49,11 +43,14 @@
 
 -- https://leetcode.com/problems/exchange-seats/
 
-with max_count as (select count(*) from Seat)
-select id,
-case
-    when (select * from max_count) % 2 != 0 and id = (select * from max_count) then student
-    when id % 2 != 0 then (select student from Seat as S2 where S2.id = S1.id + 1)
-    when id % 2 = 0 then (select student from Seat as S3 where S3.id = S1.id - 1)
-end as student
-from Seat as S1
+with T1 as (select count(*) as total from Seat),
+T2 as (
+    select id, student,
+    case
+        when id % (select total from T1) = 0 and id % 2 = 1 then id
+        when id % 2 = 0 then id - 1
+        when id % 2 = 1 then id + 1
+    end as new_id
+    from Seat
+)
+select new_id as id, student from T2 order by 1
