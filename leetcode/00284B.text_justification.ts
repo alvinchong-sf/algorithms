@@ -1,5 +1,6 @@
 /*
 Same Problem as 00284.text_justification.py but redo in Typescript
+https://leetcode.com/problems/text-justification/
 */
 
 function fullJustify(words: string[], maxWidth: number): string[] {
