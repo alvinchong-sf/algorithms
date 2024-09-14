@@ -6,7 +6,7 @@ https://leetcode.com/problems/text-justification/
 function fullJustify(words: string[], maxWidth: number): string[] {
     const result: string[][] = [];
     let currWidth = maxWidth;
-    let temp = [];
+    let temp: string[] = [];
     const finalResult: string[] = [];
 
     // Get the right amount of word in each row
@@ -27,7 +27,7 @@ function fullJustify(words: string[], maxWidth: number): string[] {
     }
     result.push(temp.slice());
 
-    // format white spaces except last row
+    // format white spaces except for last row
     for (let i = 0; i < result.length - 1; i++) {
         const rows = result[i];
         const { rowLength, emptySpace } = getTotalRowLength(rows);
@@ -56,7 +56,7 @@ function fullJustify(words: string[], maxWidth: number): string[] {
     return finalResult;
 };
 
-function addWhiteSpacesToRows(whiteSpaces: string[], rows: string[]) {
+function addWhiteSpacesToRows(whiteSpaces: string[], rows: string[]): string[] {
     let j = 0;
     for (let i = 0; i < rows.length; i++) {
         if (rows[i] === " ") {
@@ -72,7 +72,7 @@ function generateEmptySpaces(emptySpace: number, diff: number): string[] {
         return [new Array(diff).fill(" ").join("")];
     }
 
-    const whiteSpaces = new Array(emptySpace).fill(" ");
+    const whiteSpaces: string[] = new Array(emptySpace).fill(" ");
     let i = 0;
     while (diff > 0) {
         whiteSpaces[i] = whiteSpaces[i] + " ";
@@ -82,7 +82,7 @@ function generateEmptySpaces(emptySpace: number, diff: number): string[] {
     return whiteSpaces;
 }
 
-function getTotalRowLength(rows: string[]) {
+function getTotalRowLength(rows: string[]): { emptySpace: number, rowLength: number } {
     let rowLength = 0;
     let emptySpace = 0;
     for (const word of rows) {
