@@ -16,7 +16,7 @@ while this one is not In total, there is only one magic square inside the given 
 Example 2:
 Input: grid = [[8]]
 Output: 0
-
+    
 Constraints:
     row == grid.length
     col == grid[i].length
