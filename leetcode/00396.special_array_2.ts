@@ -33,7 +33,7 @@ Time: O(n + m) | Space: O(m)
 function isArraySpecial(nums: number[], queries: number[][]): boolean[] {
     let currDiff = 0;
     const diffs = [0];
-    const result = [];
+    const result: boolean[] = [];
     for (let i = 0; i < nums.length - 1; i++) {
         const curr = nums[i], next = nums[i + 1];
         if ((curr % 2 === 0 && next % 2 === 0) || (curr % 2 === 1 && next % 2 === 1)) {
