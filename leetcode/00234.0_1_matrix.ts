@@ -13,58 +13,44 @@
 // https://leetcode.com/problems/01-matrix/
 
 function updateMatrix(mat: number[][]): number[][] {
-  const m = mat.length;
-  const n = mat[0].length;
+  const m = mat.length, n = mat[0].length;
   const queue: [number, number, number][] = [];
-
-  for (let row = 0; row < m; row++) {
-    for (let col = 0; col < n; col++) {
-      const cell = mat[row][col];
-      if (cell === 0) {
-        queue.push([row, col, 0]);
-      } else {
-        mat[row][col] = Infinity;
+  for (let r = 0; r < m; r++) {
+      for (let c = 0; c < n; c++) {
+          if (mat[r][c] === 0) {
+              queue.push([r, c, 0]);
+          } else {
+              mat[r][c] = Infinity;
+          }
       }
-    }
   }
 
-  bfs(queue, mat, m, n);
+  const sr = queue[0][0], sc = queue[0][1];
+  const visited = new Set([`${sr}-${sc}`]);
+  const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+  while (queue.length) {
+      console.log(queue)
+      const [row, col, distant] = queue.shift() as [number, number, number];
+      if (mat[row][col] === Infinity) {
+          mat[row][col] = distant;
+      }
 
+      for (const [dx, dy] of directions) {
+          const nr = dx + row;
+          const nc = dy + col;
+          const tuple = `${nr}-${nc}`;
+          if (
+              nr >= 0 && 
+              nr < m && 
+              nc >= 0 && 
+              nc < n && 
+              mat[nr][nc] === Infinity && 
+              !visited.has(tuple)
+          ) {
+              queue.push([nr, nc, distant + 1]);
+              visited.add(tuple);
+          }
+      }
+  }
   return mat;
-}
-
-function bfs(
-    queue: [number, number, number][],
-    mat: number[][],
-    m: number,
-    n: number
-): void {
-    const directions = [
-        [1, 0],
-        [-1, 0],
-        [0, 1],
-        [0, -1],
-    ];
-
-    while (queue.length) {
-        const [r, c, distant] = queue.shift();
-        if (mat[r][c] === Infinity) {
-        mat[r][c] = distant;
-        }
-
-        for (const [dx, dy] of directions) {
-            const newRow = dx + r;
-            const newCol = dy + c;
-
-            if (
-                newRow >= 0 &&
-                newCol >= 0 &&
-                newRow < m &&
-                newCol < n &&
-                mat[newRow][newCol] === Infinity
-            ) {
-                queue.push([newRow, newCol, distant + 1]);
-            }
-        }
-    }
-}
+};
