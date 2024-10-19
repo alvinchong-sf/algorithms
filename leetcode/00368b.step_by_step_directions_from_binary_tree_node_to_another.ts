@@ -41,11 +41,11 @@ interface Result {
 function getDirections(root: TreeNode | null, startValue: number, destValue: number): string {
     const ancestorNode = findLowestCommonAncestor(root, startValue, destValue);
     const result: Result = { start: 0, end: [], final: "" }
-    findStart(ancestorNode, startValue, destValue, 0, result);
+    findSteps(ancestorNode, startValue, destValue, 0, result);
     return "U".repeat(result.start) + result.final;
 };
 
-function findStart(
+function findSteps(
     root: TreeNode | null, 
     startValue: number, 
     destValue: number, 
@@ -58,13 +58,13 @@ function findStart(
 
     if (root.left) {
         result.end.push("L");
-        findStart(root.left, startValue, destValue, level + 1, result);
+        findSteps(root.left, startValue, destValue, level + 1, result);
         result.end.pop();
     }
 
     if (root.right) {
         result.end.push("R");
-        findStart(root.right, startValue, destValue, level + 1, result);
+        findSteps(root.right, startValue, destValue, level + 1, result);
         result.end.pop();
     }
 }
