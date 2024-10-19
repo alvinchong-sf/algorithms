@@ -116,7 +116,7 @@ function findAllRecipes2(
     const cycleSet = new Set<string>();
 
     for (const recipe in graph) {
-        const haveIngredients = dfs(recipe, graph, supplySet, cycleSet);
+        const haveIngredients = dfs2(recipe, graph, supplySet, cycleSet);
         if (haveIngredients) result.push(recipe);
     }
 
@@ -135,7 +135,7 @@ function dfs2(
     cycleSet.add(recipe);
 
     for (const ingredient of graph[recipe]) {
-        const haveCycle = !dfs(ingredient, graph, supplySet, cycleSet);
+        const haveCycle = !dfs2(ingredient, graph, supplySet, cycleSet);
         if (haveCycle) return false;
     }
 
