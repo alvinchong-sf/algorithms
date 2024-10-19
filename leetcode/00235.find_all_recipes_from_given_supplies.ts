@@ -103,3 +103,53 @@ function dfs(
     
     return true;
 }
+
+/* Solution #2, same time and space complexity */
+function findAllRecipes2(
+    recipes: string[],
+    ingredients: string[][],
+    supplies: string[],
+): string[] {
+    const graph = buildGraph(recipes, ingredients);
+    const supplySet = new Set<string>(supplies);
+    const result: string[] = [];
+    const cycleSet = new Set<string>();
+
+    for (const recipe in graph) {
+        const haveIngredients = dfs(recipe, graph, supplySet, cycleSet);
+        if (haveIngredients) result.push(recipe);
+    }
+
+    return result;
+};
+
+function dfs2(
+    recipe: string,
+    graph: Graph,
+    supplySet: Set<string>,
+    cycleSet: Set<string>,
+): boolean {
+    if (cycleSet.has(recipe)) return false;
+    if (supplySet.has(recipe)) return true;
+    if (!(recipe in graph)) return false;
+    cycleSet.add(recipe);
+
+    for (const ingredient of graph[recipe]) {
+        const haveCycle = !dfs(ingredient, graph, supplySet, cycleSet);
+        if (haveCycle) return false;
+    }
+
+    supplySet.add(recipe);
+    cycleSet.delete(recipe);
+    return true;
+}
+
+function buildGraph(recipes: string[], ingredients: string[][]): Graph {
+    const graph: Graph = {};
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+        const currIngredients = ingredients[i];
+        graph[recipe] = currIngredients;
+    }
+    return graph;
+}
