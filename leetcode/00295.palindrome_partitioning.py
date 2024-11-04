@@ -1,4 +1,4 @@
-/*
+"""
 131. Palindrome Partitioning
 Given a string s, partition s such that every substring of the partition is a
 palindrome. Return all possible palindrome partitioning of s.
@@ -14,9 +14,9 @@ Output: [["a"]]
 Constraints:
     1 <= s.length <= 16
     s contains only lowercase English letters.
-*/
-# time: O(k^n) | space: O(n)
-# https://leetcode.com/problems/palindrome-partitioning/description/
+time: O(k^n) | space: O(n)
+https://leetcode.com/problems/palindrome-partitioning/description/
+"""
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         result = []
