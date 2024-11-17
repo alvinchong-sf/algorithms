@@ -32,7 +32,9 @@
 -- | Henry     |
 -- | Max       |
 -- +-----------+
+-- https://leetcode.com/problems/customers-who-never-order/
 
+-- Subquery Solution
 SELECT Customers.Name AS Customers
 FROM Customers
 WHERE Customers.Id NOT IN (
@@ -40,4 +42,9 @@ WHERE Customers.Id NOT IN (
     from Orders
 )
 
--- https://leetcode.com/problems/customers-who-never-order/
+-- Join table solution
+select C.name as Customers
+from Customers as C
+left join Orders as O
+on O.customerId = C.id
+where O.id is null
