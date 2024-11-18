@@ -114,3 +114,27 @@ on S.student_id = E.student_id
 and SUB.subject_name = E.subject_name
 group by SUB.subject_name, S.student_id
 order by S.student_id, SUB.subject_name;
+
+-- using CTEs
+with T1 as (
+    select *, count(*) as attended_exams
+    from Examinations
+    group by student_id, subject_name
+    order by student_id
+), T2 as (
+    select *
+    from Students as ST
+    cross join Subjects as SB
+    order by ST.student_id, SB.subject_name
+), T3 as (
+    select T2.student_id, T2.student_name, T2.subject_name, T1.attended_exams
+    from T2
+    left join T1
+    on T1.student_id = T2.student_id and T1.subject_name = T2.subject_name
+)
+
+select student_id, student_name, subject_name,
+case
+    when attended_exams is null then 0 else attended_exams
+end as attended_exams
+from T3
