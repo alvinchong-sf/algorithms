@@ -94,6 +94,8 @@
 
 -- https://leetcode.com/problems/movie-rating/description/
 
+
+-- MYSQL
 (
     select U.name as results
     from MovieRating as MR
@@ -114,3 +116,25 @@ union all
     order by avg(R.rating) desc, M.title asc
     limit 1
 );
+
+-- POSTGRESQL
+with T1 as (
+    select MR.user_id, count(*) as num_movies, U.name
+    from MovieRating as MR
+    left join Users as U
+    on MR.user_id = U.user_id
+    group by MR.user_id, U.name
+    order by num_movies desc, U.name asc
+    limit 1
+), T2 as (
+    select MR.movie_id, avg(MR.rating) as avg_rating, M.title
+    from MovieRating as MR
+    left join Movies as M
+    on Mr.movie_id = M.movie_id
+    where MR.created_at between '2020-02-01' AND '2020-02-29'
+    group by MR.movie_id, M.title
+    order by avg_rating desc, M.title asc
+    limit 1
+)
+
+(select name as results from T1) union all (select title as results from T2)
