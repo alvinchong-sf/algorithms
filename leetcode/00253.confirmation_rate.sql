@@ -87,3 +87,22 @@ on S.user_id = C.user_id
 group by S.user_id
 order by confirmation_rate
 ;
+
+-- postgresql solution using cte
+with cte1 as (
+    select user_id,
+    round(
+    sum(
+        case
+            when action = 'confirmed' then 1 else 0
+        end
+    ):: NUMERIC / count(*), 2) as confirmation_rate
+    from Confirmations
+    group by user_id
+), cte2 as (
+    select user_id
+    from Signups
+    where user_id not in (select user_id from cte1)
+)
+
+(select *, 0.00 as confirmation_rate from cte2) union all (select * from cte1)
