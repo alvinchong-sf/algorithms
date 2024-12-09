@@ -62,3 +62,25 @@ from (
 group by id)
 
 select * from temp2 where num = (select max(num) as num from temp2);
+
+
+-- Postgres using sorting and limit 1
+with t1 as (
+    select requester_id as id, count(*) as num
+    from RequestAccepted
+    group by requester_id
+), t2 as (
+    select accepter_id as id, count(*) as num
+    from RequestAccepted
+    group by accepter_id
+)
+
+select id, sum(num) as num
+from (
+    select * from t1
+    union all
+    select * from t2
+)
+group by id
+order by sum(num) desc
+limit 1
