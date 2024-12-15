@@ -110,3 +110,28 @@ left join Users as U2
 on T.driver_id = U2.users_id
 where U1.banned = 'No' and U2.banned = 'No' and T.request_at between '2013-10-01' and '2013-10-03'
 group by T.request_at
+
+
+
+/* using ctes */
+with 
+    T1 as (select users_id from Users where banned = 'Yes'), 
+    T2 as (
+    select * 
+    from Trips
+    where 
+        client_id not in (select users_id from T1) and 
+        driver_id not in (select users_id from T1) and
+        request_at between '2013-10-01' and '2013-10-03'
+)
+
+select request_at as Day,
+round(
+    sum(
+        case
+        when status like 'cancelled_by_%' then 1 else 0
+        end
+    ):: NUMERIC / count(*), 2
+) as "Cancellation Rate"
+from T2
+group by request_at
