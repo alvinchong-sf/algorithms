@@ -13,13 +13,14 @@ var wordBreak = function(s, wordDict) {
     const set = new Set(wordDict);
     const table = new Array(s.length + 1).fill(false);
     table[0] = true;
-    
-    for(let i = 0; i < s.length; i++) {
-        for(let j = i + 1; j <= s.length; j++) {
-            const str = s.slice(i, j);
-            if(set.has(str) && table[i]) {
-                table[j] = true;
-                if(table[s.length]) return true;
+    for (let i = 0; i < s.length; i++) {
+        if (table[i]) {
+            for (let j = i + 1; j <= s.length; j++) {
+                const str = s.slice(i, j);
+                if (set.has(str)) {
+                    table[j] = true;
+                    if(table[s.length]) return true;
+                }
             }
         }
     }
