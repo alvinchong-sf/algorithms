@@ -98,3 +98,31 @@ case
 when (total_purchases - total_refunds) >= 0 then 'Positive' else 'Negative'
 end as revenue_flag
 from cte
+
+/*
+Prompt 6: Active Customers by Month
+You have a transactions table with these columns:
+    transaction_id
+    customer_id
+    transaction_date
+    amount
+
+Write a query that outputs for each month:
+    month
+    active_customers → number of unique customers who made at least one transaction in that month
+    total_transactions → total number of transactions in that month
+    total_revenue → sum of amount in that month
+
+Bonus:
+Also include a customer_activity_flag:
+    If active_customers >= 10 → 'High'
+    If between 5 and 9 → 'Moderate'
+    If fewer than 5 → 'Low'
+*/
+
+/* TODO */
+select SUBSTRING(transaction_date, 1, 7) as month,
+count(distinct customer_id) as active_customers
+from transactions
+group by SUBSTRING(transaction_date, 1, 7)
+
