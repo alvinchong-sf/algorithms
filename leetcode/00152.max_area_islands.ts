@@ -20,35 +20,33 @@
 // Output: 6
 // Explanation: The answer is not 11, because the island must be connected 4-directionally.
 
-var maxAreaOfIsland = function(grid) {
-    let largestIsland = 0;
-    
-    let height = grid.length;
-    let width = grid[0].length;
-    for(let row = 0; row < height; row++) {
-        for(let col = 0; col < width; col++) {
-            if(grid[row][col] === 1) {
-                let count = {islands: 0}
-                dfs(row, col, grid, count);
-                largestIsland = Math.max(count.islands, largestIsland);
-            } else if (grid[row][col] === 0 || grid[row][col] === "V") {
-                continue;
+// time O(n * m) | space O(Max(n, m))
+// https://leetcode.com/problems/max-area-of-island/
+
+function maxAreaOfIsland(grid: number[][]): number {
+    const m = grid.length, n = grid[0].length;
+    let maxIslandSize = 0;
+
+    for (let r = 0; r < m; r++) {
+        for (let c = 0; c < n; c++) {
+            if (grid[r][c] === 1) {
+                const currIslandSize = dfs(grid, r, c, m, n);
+                maxIslandSize = Math.max(currIslandSize, maxIslandSize);
             }
         }
     }
-    return largestIsland;
+
+    return maxIslandSize;
 };
 
-const dfs = (i, j, grid, count) => {
-    if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) return;
-    if(grid[i][j] !== 1) return;
-    
-    count.islands++
-    grid[i][j] = "V";
-    dfs(i + 1, j, grid, count);
-    dfs(i - 1, j, grid, count);
-    dfs(i, j + 1, grid, count);
-    dfs(i, j - 1, grid, count);
+function dfs(grid: number[][], r: number, c: number, m: number, n: number): number {
+    if (r < 0 || c < 0 || r >= m || c >= n || grid[r][c] !== 1) return 0;
+
+    grid[r][c] = 0;
+    const bot = dfs(grid, r + 1, c, m, n);
+    const top = dfs(grid, r - 1, c, m, n);
+    const right = dfs(grid, r, c + 1, m, n);
+    const left = dfs(grid, r, c - 1, m, n);
+
+    return bot + top + right + left + 1;
 }
-// time o(n * m) | space o(n + m)
-// https://leetcode.com/problems/max-area-of-island/
