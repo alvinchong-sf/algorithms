@@ -25,12 +25,14 @@
 
 function maxAreaOfIsland(grid: number[][]): number {
     const m = grid.length, n = grid[0].length;
+    const dirs: [number, number][] = [[1,0],[-1,0],[0,1],[0,-1]];
     let maxIslandSize = 0;
 
     for (let r = 0; r < m; r++) {
         for (let c = 0; c < n; c++) {
             if (grid[r][c] === 1) {
-                const currIslandSize = dfs(grid, r, c, m, n);
+                // const currIslandSize = dfs(grid, r, c, m, n);
+                const currIslandSize = bfs(grid, r, c, m, n, dirs);
                 maxIslandSize = Math.max(currIslandSize, maxIslandSize);
             }
         }
@@ -38,6 +40,26 @@ function maxAreaOfIsland(grid: number[][]): number {
 
     return maxIslandSize;
 };
+
+function bfs(grid: number[][], r: number, c: number, m: number, n: number, dirs: [number, number][]): number {
+    const queue = [[r, c]];
+    grid[r][c] = 0;
+    let count = 0;
+
+    while (queue.length) {
+        const [row, col] = queue.shift() as [number, number];
+        for (const [dy, dx] of dirs) {
+            const nr = row + dy;
+            const nc = col + dx;
+            if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] === 1) {
+                queue.push([nr, nc]);
+                grid[nr][nc] = 0; // push during enqueue to avoid infinite loop issue
+            }
+        }
+        count++;
+    }
+    return count;
+}
 
 function dfs(grid: number[][], r: number, c: number, m: number, n: number): number {
     if (r < 0 || c < 0 || r >= m || c >= n || grid[r][c] !== 1) return 0;
