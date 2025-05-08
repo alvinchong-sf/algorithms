@@ -97,3 +97,32 @@ where (E1.salary, E1.departmentId) in (
     order by E2.salary desc
     limit 3
 )
+
+/* Using ctes */
+with S1 as (
+    select D.id as department_id,
+    (select max(E.salary) from Employee as E where D.id = E.departmentId) as first_salary
+    from Department as D
+), S2 as (
+    select E.departmentId as department_id, max(salary) as second_salary
+    from Employee as E
+    where salary < (select first_salary from S1 as HS where E.departmentId = HS.department_id)
+    group by E.departmentId
+), S3 as (
+    select E.departmentId as department_id, max(salary) as third_salary
+    from Employee as E
+    where salary < (select second_salary from S2 as HS where E.departmentId = HS.department_id)
+    group by E.departmentId
+), T1 as (
+    select S1.department_id as id, first_salary, second_salary, third_salary
+    from S1
+    left join S2 on S1.department_id = S2.department_id
+    left join S3 on S1.department_id = S3.department_id
+)
+
+select D.name as Department, E.name as Employee, E.salary as Salary
+from Employee as E
+join Department as D
+on E.departmentId = D.id
+join T1 on E.departmentId = T1.id
+where E.salary = first_salary or E.salary = second_salary or E.salary = third_salary
