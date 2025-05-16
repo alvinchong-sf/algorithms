@@ -17,20 +17,14 @@
 -- lat is the latitude of the policy holder's city. It's guaranteed that lat is not NULL.
 -- lon is the longitude of the policy holder's city. It's guaranteed that lon is not NULL.
  
-
 -- Write a solution to report the sum of all total investment values in 2016 tiv_2016, for all policyholders who:
-
 -- have the same tiv_2015 value as one or more other policyholders, and
 -- are not located in the same city as any other policyholder (i.e., the (lat, lon) attribute 
 -- pairs must be unique).
 -- Round tiv_2016 to two decimal places.
-
 -- The result format is in the following example.
 
- 
-
 -- Example 1:
-
 -- Input: 
 -- Insurance table:
 -- +-----+----------+----------+-----+-----+
@@ -56,20 +50,20 @@
 -- So, the result is the sum of tiv_2016 of the first and last record, which is 45.
 
 -- https://leetcode.com/problems/investments-in-2016
-with cte1 as (select * from Insurance where tiv_2015 in (
+
+with T1 as (
     select tiv_2015
     from Insurance
     group by tiv_2015
-    having count(*) >= 2  
-))
-select round(sum(temp.tiv_2016), 2) as tiv_2016
-from (
-    select A.tiv_2016
-    from cte1 as A
-    cross join Insurance as B
-    where A.pid != B.pid
-    and (A.lat != B.lat or A.lon != B.lon)
-    group by A.pid
-    having count(*) = (select count(*) - 1 from Insurance)
-    order by A.pid, B.pid
-) as temp
+    having count(tiv_2015) > 1
+), T2 as (
+    select lat, lon
+    from Insurance
+    group by lat, lon
+    having count(*) = 1
+)
+
+select round(sum(tiv_2016)::decimal, 2) as tiv_2016
+from Insurance
+where tiv_2015 in (select * from T1)
+and (lat, lon) in (select * from T2)
