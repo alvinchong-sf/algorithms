@@ -35,7 +35,7 @@ Constraints:
 https://leetcode.com/problems/find-pivot-index/    
 */
 
-/* Time: O(n) | Space: O(1) */
+/* Time: O(n) | Space: O(1) | using prefix */
 function pivotIndex(nums: number[]): number {
     const sum = nums.reduce((accu, num) => accu + num);
     let leftSum = 0;
@@ -46,7 +46,7 @@ function pivotIndex(nums: number[]): number {
     return -1;
 };
 
-/* Time: O(n) | Space: O(n) */
+/* Time: O(n) | Space: O(n) | using left-right array */
 function pivotIndex2(nums: number[]): number {
     const left = new Array(nums.length).fill(0);
     const right = new Array(nums.length).fill(0);
