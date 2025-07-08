@@ -43,19 +43,18 @@ class SmallestInfiniteSet:
         self.minheap = MinHeap()
 
     def popSmallest(self) -> int:
-        if self.minheap.size() > 0 and self.minheap.peek() < self.i:
-            min_num = self.minheap.remove()
-            self.removed_set.add(min_num)
-            return min_num
-
-        curr_i = self.i
-        self.removed_set.add(self.i)
-        self.i += 1
-        return curr_i
+        if self.minheap.size() == 0:
+            curr_i = self.i
+            self.i += 1
+            return curr_i
+        else:
+            removed_num = self.minheap.remove()
+            self.removed_set.remove(removed_num)
+            return removed_num
 
     def addBack(self, num: int) -> None:
-        if num in self.removed_set:
-            self.removed_set.remove(num)
+        if num not in self.removed_set and num < self.i:
+            self.removed_set.add(num)
             self.minheap.add(num)
 
 class MinHeap:
