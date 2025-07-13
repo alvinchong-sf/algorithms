@@ -36,6 +36,8 @@ Constraints:
 
 https://leetcode.com/problems/total-cost-to-hire-k-workers/
 
+Time: O(k log(candidates)) where candidates worst case scenario could be N
+Space: O(candidates) where candidates worst case scenario could be N
 */
 
 function totalCost(costs: number[], k: number, candidates: number): number {
